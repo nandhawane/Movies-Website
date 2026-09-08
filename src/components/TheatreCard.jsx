@@ -1,0 +1,1 @@
+export default function TheatreCard({ name, distance, formats }) { return <article className="theatre-card"><div className="theatre-icon">▦</div><div><h3>{name}</h3><p>{distance} · {formats}</p></div><button>See shows <span>→</span></button></article> }

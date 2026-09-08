@@ -1,0 +1,5 @@
+import Show from '../models/show.model.js'
+export async function listShows(req, res, next) { try { const filter = { status: 'scheduled' }; if (req.query.movie) filter.movie = req.query.movie; if (req.query.screen) filter.screen = req.query.screen; if (req.query.date) { const start = new Date(req.query.date); const end = new Date(start); end.setDate(end.getDate() + 1); filter.startsAt = { $gte: start, $lt: end } } res.json(await Show.find(filter).populate('movie screen').sort({ startsAt: 1 })) } catch (error) { next(error) } }
+export async function getShow(req, res, next) { try { const show = await Show.findById(req.params.id).populate('movie screen'); if (!show) return res.status(404).json({ message: 'Show not found' }); res.json(show) } catch (error) { next(error) } }
+export async function createShow(req, res, next) { try { res.status(201).json(await Show.create(req.body)) } catch (error) { next(error) } }
+export async function updateShow(req, res, next) { try { res.json(await Show.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })) } catch (error) { next(error) } }
